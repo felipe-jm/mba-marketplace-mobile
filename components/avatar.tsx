@@ -9,6 +9,7 @@ export function Avatar() {
           uri: "https://github.com/felipe-jm.png",
         }}
         className="w-full h-full rounded-lg"
+        alt="Avatar"
       />
     </Box>
   );

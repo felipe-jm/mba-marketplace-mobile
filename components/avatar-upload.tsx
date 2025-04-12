@@ -43,6 +43,7 @@ export function AvatarUpload() {
           <Image
             source={{ uri: avatar }}
             className="w-full h-full rounded-lg"
+            alt="Avatar"
           />
         ) : (
           <Icon as={ImageIcon} className="w-6 h-6 text-custom-orange-base" />

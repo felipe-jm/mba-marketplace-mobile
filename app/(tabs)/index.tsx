@@ -1,5 +1,7 @@
 import { FlatList, SafeAreaView } from "react-native";
 
+import { router } from "expo-router";
+
 import { ArrowRight, Search, SlidersVertical } from "lucide-react-native";
 
 import { Box } from "@/components/ui/box";
@@ -13,6 +15,10 @@ import { Button } from "@/components/button";
 import { ProductCard, PRODUCTS } from "@/components/product-card";
 
 export default function ProductsScreen() {
+  function handleOpenFiltersModal() {
+    router.push("/modal");
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-custom-shape-white">
       <Box className="flex-1 bg-custom-shape-shape">
@@ -35,7 +41,11 @@ export default function ProductsScreen() {
 
             <HStack className="w-full gap-2 mt-4 items-center">
               <Box className="flex-1">
-                <Input placeholder="Pesquisar" iconLeft={Search} />
+                <Input
+                  placeholder="Pesquisar"
+                  iconLeft={Search}
+                  onPress={handleOpenFiltersModal}
+                />
               </Box>
 
               <Button
