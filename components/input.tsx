@@ -1,5 +1,6 @@
 import { ComponentProps, useState } from "react";
-import { config } from "./ui/gluestack-ui-provider/config";
+
+import { CircleAlert } from "lucide-react-native";
 
 import {
   Input as GluestackInput,
@@ -18,8 +19,6 @@ import {
 
 import { cn } from "@/utils/cn";
 import { Icon } from "./ui/icon";
-
-import AlertCircleIcon from "@/assets/icons/alert-circle.svg";
 
 type Props = ComponentProps<typeof InputField> & {
   label: string;
@@ -102,7 +101,7 @@ export function Input({
         <FormControlError className="items-center justify-start gap-1">
           <FormControlErrorIcon
             className="w-4 h-4 text-custom-semantic-error"
-            as={AlertCircleIcon}
+            as={CircleAlert}
           />
           <FormControlErrorText className="text-custom-semantic-error">
             {errorMessage}

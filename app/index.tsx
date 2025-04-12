@@ -1,14 +1,12 @@
+import { Eye, Mail } from "lucide-react-native";
+
 import Logo from "@/assets/images/logo.svg";
 
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/input";
-import { Icon } from "@/components/ui/icon";
-
-import Mail02Icon from "@/assets/icons/mail-02.svg";
-import ViewOffIcon from "@/assets/icons/view-off.svg";
-import View from "@/assets/icons/view.svg";
 import { VStack } from "@/components/ui/vstack";
+import { Button } from "@/components/button";
 
 export default function Index() {
   return (
@@ -20,24 +18,33 @@ export default function Index() {
         <Input
           label="Label"
           placeholder="Placeholder"
-          iconLeft={Mail02Icon}
-          iconRight={View}
+          iconLeft={Mail}
+          iconRight={Eye}
         />
 
         <Input
           label="Invalid Input"
           placeholder="Invalid Input"
           isInvalid
-          iconLeft={Mail02Icon}
-          iconRight={ViewOffIcon}
+          iconLeft={Mail}
+          iconRight={Eye}
         />
 
         <Input
           label="Error Input"
           placeholder="Error Input"
           errorMessage="Error Message"
-          iconLeft={Mail02Icon}
-          iconRight={ViewOffIcon}
+          iconLeft={Mail}
+          iconRight={Eye}
+        />
+
+        <Button title="Button" iconLeft={Mail} iconRight={Eye} />
+
+        <Button
+          title="Button"
+          variant="outline"
+          iconLeft={Mail}
+          iconRight={Eye}
         />
       </VStack>
     </Box>
