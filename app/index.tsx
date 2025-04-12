@@ -3,8 +3,8 @@ import { Text } from "@/components/ui/text";
 
 export default function Index() {
   return (
-    <Box className="flex-1 items-center justify-center">
-      <Text className="text-2xl font-bold">Sign In</Text>
+    <Box className="bg-custom-shape-white flex-1 items-center justify-center">
+      <Text className="font-poppins text-3xl">Sign In</Text>
     </Box>
   );
 }

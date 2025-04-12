@@ -3,6 +3,48 @@ import { vars } from "nativewind";
 
 export const config = {
   light: vars({
+    /* Custom colors */
+    /* Orange */
+    "--color-custom-orange-base": "#F24D0D",
+    "--color-custom-orange-dark": "#C43C08",
+
+    /* Blue */
+    "--color-custom-blue-light": "#D7EFF9",
+    "--color-custom-blue-base": "#5EC5FD",
+    "--color-custom-blue-dark": "#009CF0",
+
+    /* Shape */
+    "--color-custom-shape-white": "#FFFFFF",
+    "--color-custom-shape-background": "#FBF4F4",
+    "--color-custom-shape-shape": "#F5EAEA",
+
+    /* Grayscale */
+    "--color-custom-gray-100": "#ADADAD",
+    "--color-custom-gray-200": "#949494",
+    "--color-custom-gray-300": "#666666",
+    "--color-custom-gray-400": "#3D3D3D",
+    "--color-custom-gray-500": "#1D1D1D",
+
+    /* Semantic */
+    "--color-custom-semantic-error": "#DC3545",
+    "--color-custom-semantic-success": "#28A745",
+
+    /* Custom typography */
+    /* Font Family */
+    "--font-family-dmsans-bold": "DMSans_700Bold",
+
+    "--font-family-poppins-regular": "Poppins_400Regular",
+    "--font-family-poppins-medium": "Poppins_500Medium",
+
+    /* Font Size */
+    "--font-size-xs": "10px",
+    "--font-size-sm": "12px",
+    "--font-size-md": "14px",
+    "--font-size-lg": "16px",
+    "--font-size-2xl": "20px",
+    "--font-size-3xl": "24px",
+
+    /* Primary */
     "--color-primary-0": "179 179 179",
     "--color-primary-50": "153 153 153",
     "--color-primary-100": "128 128 128",

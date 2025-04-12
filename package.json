@@ -13,6 +13,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/dm-sans": "^0.3.0",
+    "@expo-google-fonts/poppins": "^0.3.0",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-ui/icon": "^0.1.27",
     "@gluestack-ui/nativewind-utils": "^1.0.26",
