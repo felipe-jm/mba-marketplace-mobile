@@ -38,10 +38,10 @@ export function AvatarUpload() {
 
   return (
     <TouchableOpacity onPress={handleAvatarUpload}>
-      <Box className="w-36 h-36 items-center justify-center rounded-lg bg-custom-shape-shape">
+      <Box className="w-36 h-36 items-center justify-center rounded-lg bg-custom-shape-white">
         {avatar ? (
           <Image
-            source={{ uri: avatar }}
+            source={{ uri: avatar || "https://github.com/felipe-jm.png" }}
             className="w-full h-full rounded-lg"
             alt="Avatar"
           />

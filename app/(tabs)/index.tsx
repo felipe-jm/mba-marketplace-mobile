@@ -21,9 +21,13 @@ export default function ProductsScreen() {
     router.push("/modal");
   }
 
+  function handleOpenProfile() {
+    router.push("/(tabs)/profile");
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-custom-shape-white">
-      <Box className="flex-1 bg-custom-shape-shape">
+      <Box className="flex-1 bg-custom-shape-background">
         <Box className="p-6 bg-custom-shape-white rounded-b-3xl items-center">
           <HStack className="w-full gap-4">
             <Avatar />
@@ -32,7 +36,11 @@ export default function ProductsScreen() {
               <Text className="font-dmsans text-custom-gray-500 text-md">
                 Olá, Felipe!
               </Text>
-              <Link href="/profile" title="Ver perfil" iconRight={ArrowRight} />
+              <Link
+                title="Ver perfil"
+                iconRight={ArrowRight}
+                onPress={handleOpenProfile}
+              />
             </VStack>
           </HStack>
 

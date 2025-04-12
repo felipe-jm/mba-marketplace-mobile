@@ -29,11 +29,16 @@ export function Button({
   className,
   ...rest
 }: Props) {
+  // Determine if button has any icons
+  const hasIcons = !!iconLeft || !!iconRight;
+
   return (
     <GluestackButton
       {...rest}
       className={cn(
-        "w-full rounded-xl h-16 justify-between",
+        "w-full rounded-xl h-16",
+        // Use justify-between only when there are icons
+        hasIcons ? "justify-between" : "justify-center",
         variant === "outline"
           ? "bg-transparent border border-custom-orange-base"
           : "bg-custom-orange-base",

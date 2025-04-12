@@ -21,6 +21,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Icon as={Store} color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
@@ -29,6 +30,15 @@ export default function TabLayout() {
           tabBarActiveTintColor: "#F24D0D",
           tabBarInactiveTintColor: "#ADADAD",
           tabBarIcon: ({ color }) => <Icon as={User} color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="product"
+        options={{
+          tabBarItemStyle: {
+            display: "none",
+          },
         }}
       />
     </Tabs>
