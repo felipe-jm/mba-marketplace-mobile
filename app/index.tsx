@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/input";
 import { VStack } from "@/components/ui/vstack";
 import { Button } from "@/components/button";
+import { Link } from "@/components/link";
 
 export default function Index() {
   return (
@@ -46,6 +47,8 @@ export default function Index() {
           iconLeft={Mail}
           iconRight={Eye}
         />
+
+        <Link title="Link" iconLeft={Mail} iconRight={Eye} />
       </VStack>
     </Box>
   );
