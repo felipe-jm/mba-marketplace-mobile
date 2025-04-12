@@ -1,3 +1,5 @@
+import { router } from "expo-router";
+
 import { Eye, KeyRound, Mail, ArrowRight } from "lucide-react-native";
 
 import Logo from "@/assets/images/logo.svg";
@@ -10,6 +12,10 @@ import { Button } from "@/components/button";
 import { Wrapper } from "@/components/wrapper";
 
 export default function Index() {
+  function handleNavigateToSignUp() {
+    router.push("/sign-up");
+  }
+
   return (
     <Wrapper>
       <Box className="p-10 flex-1 items-center justify-between">
@@ -52,7 +58,12 @@ export default function Index() {
           <Text className="text-custom-gray-300 text-md">
             Ainda não tem uma conta?
           </Text>
-          <Button title="Cadastrar" variant="outline" iconRight={ArrowRight} />
+          <Button
+            title="Cadastrar"
+            variant="outline"
+            iconRight={ArrowRight}
+            onPress={handleNavigateToSignUp}
+          />
         </VStack>
       </Box>
     </Wrapper>
