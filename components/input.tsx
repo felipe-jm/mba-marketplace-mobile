@@ -1,4 +1,5 @@
-import { ComponentProps } from "react";
+import { ComponentProps, useState } from "react";
+import { config } from "./ui/gluestack-ui-provider/config";
 
 import {
   Input as GluestackInput,
@@ -9,6 +10,7 @@ import {
 import {
   FormControl,
   FormControlError,
+  FormControlErrorIcon,
   FormControlErrorText,
   FormControlLabel,
   FormControlLabelText,
@@ -16,6 +18,8 @@ import {
 
 import { cn } from "@/utils/cn";
 import { Icon } from "./ui/icon";
+
+import AlertCircleIcon from "@/assets/icons/alert-circle.svg";
 
 type Props = ComponentProps<typeof InputField> & {
   label: string;
@@ -38,6 +42,8 @@ export function Input({
   iconRight,
   ...rest
 }: Props) {
+  const [isFocused, setIsFocused] = useState(false);
+
   const invalid = !!errorMessage || isInvalid;
 
   return (
@@ -45,8 +51,8 @@ export function Input({
       <FormControlLabel>
         <FormControlLabelText
           className={cn(
-            "uppercase text-custom-gray-400",
-            invalid && "text-custom-orange-base"
+            "uppercase text-custom-gray-300",
+            isFocused && "text-custom-orange-base"
           )}
         >
           {label}
@@ -58,25 +64,51 @@ export function Input({
         isInvalid={invalid}
         isReadOnly={isReadOnly}
         isDisabled={isDisabled}
+        style={{
+          // TODO: get colors from theme
+          borderBottomColor: isFocused ? "#3D3D3D" : "#666666",
+          borderBottomWidth: 1,
+        }}
       >
         {iconLeft && (
           <InputSlot className="ml-2">
-            <Icon as={iconLeft} className="w-6 h-6 text-custom-gray-200" />
+            <Icon
+              as={iconLeft}
+              className={cn(
+                "w-6 h-6 text-custom-gray-200",
+                isFocused && "text-custom-orange-base",
+                invalid && "text-custom-semantic-error"
+              )}
+            />
           </InputSlot>
         )}
-        <InputField className={cn("px-4 py-2", className)} {...rest} />
+        <InputField
+          className={cn("px-4 py-2", className)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          {...rest}
+        />
         {iconRight && (
-          <InputSlot className="mr-2 text-custom-gray-300">
-            <Icon as={iconRight} />
+          <InputSlot className="mr-2">
+            <Icon
+              as={iconRight}
+              className={cn("w-6 h-6 text-custom-gray-200")}
+            />
           </InputSlot>
         )}
       </GluestackInput>
 
-      <FormControlError>
-        <FormControlErrorText className="text-custom-orange-base-200">
-          {errorMessage}
-        </FormControlErrorText>
-      </FormControlError>
+      {errorMessage && (
+        <FormControlError className="items-center justify-start gap-1">
+          <FormControlErrorIcon
+            className="w-4 h-4 text-custom-semantic-error"
+            as={AlertCircleIcon}
+          />
+          <FormControlErrorText className="text-custom-semantic-error">
+            {errorMessage}
+          </FormControlErrorText>
+        </FormControlError>
+      )}
     </FormControl>
   );
 }

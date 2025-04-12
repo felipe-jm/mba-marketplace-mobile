@@ -25,22 +25,6 @@ export default function Index() {
         />
 
         <Input
-          label="Disabled Input"
-          placeholder="Disabled Input"
-          isDisabled
-          iconLeft={Mail02Icon}
-          iconRight={ViewOffIcon}
-        />
-
-        <Input
-          label="Read Only Input"
-          placeholder="Read Only Input"
-          isReadOnly
-          iconLeft={Mail02Icon}
-          iconRight={ViewOffIcon}
-        />
-
-        <Input
           label="Invalid Input"
           placeholder="Invalid Input"
           isInvalid
