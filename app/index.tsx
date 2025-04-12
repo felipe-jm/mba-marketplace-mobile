@@ -8,6 +8,7 @@ import { Input } from "@/components/input";
 import { VStack } from "@/components/ui/vstack";
 import { Button } from "@/components/button";
 import { Link } from "@/components/link";
+import { Checkbox } from "@/components/checkbox";
 
 export default function Index() {
   return (
@@ -49,6 +50,8 @@ export default function Index() {
         />
 
         <Link title="Link" iconLeft={Mail} iconRight={Eye} />
+
+        <Checkbox label="Checkbox" value="checkbox" />
       </VStack>
     </Box>
   );
