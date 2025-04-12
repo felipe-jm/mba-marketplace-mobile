@@ -13,7 +13,7 @@ import { Wrapper } from "@/components/wrapper";
 
 export default function Index() {
   function handleNavigateToSignUp() {
-    router.push("/sign-up");
+    router.push("/(tabs)");
   }
 
   return (

@@ -11,7 +11,7 @@ import { cn } from "@/utils/cn";
 import { Icon } from "./ui/icon";
 
 type Props = ComponentProps<typeof GluestackButton> & {
-  title: string;
+  title?: string;
   variant?: "solid" | "outline";
   isLoading?: boolean;
   showBoxShadow?: boolean;
@@ -56,7 +56,7 @@ export function Button({
         />
       )}
 
-      {isLoading ? (
+      {!title ? null : isLoading ? (
         <ButtonSpinner
           size="small"
           className={cn(

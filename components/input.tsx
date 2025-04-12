@@ -21,7 +21,7 @@ import { cn } from "@/utils/cn";
 import { Icon } from "./ui/icon";
 
 type Props = ComponentProps<typeof InputField> & {
-  label: string;
+  label?: string;
   isInvalid?: boolean;
   isReadOnly?: boolean;
   isDisabled?: boolean;
@@ -47,16 +47,18 @@ export function Input({
 
   return (
     <FormControl isInvalid={invalid} className="w-full">
-      <FormControlLabel>
-        <FormControlLabelText
-          className={cn(
-            "uppercase text-custom-gray-300",
-            isFocused && "text-custom-orange-base"
-          )}
-        >
-          {label}
-        </FormControlLabelText>
-      </FormControlLabel>
+      {label && (
+        <FormControlLabel>
+          <FormControlLabelText
+            className={cn(
+              "uppercase text-custom-gray-300",
+              isFocused && "text-custom-orange-base"
+            )}
+          >
+            {label}
+          </FormControlLabelText>
+        </FormControlLabel>
+      )}
       <GluestackInput
         className={cn("h-12", className)}
         variant="underlined"
