@@ -12,7 +12,9 @@ import { Avatar } from "@/components/avatar";
 import { Link } from "@/components/link";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
-import { ProductCard, PRODUCTS } from "@/components/product-card";
+import { ProductCard } from "@/components/product-card";
+
+import { PRODUCTS } from "@/data/products";
 
 export default function ProductsScreen() {
   function handleOpenFiltersModal() {

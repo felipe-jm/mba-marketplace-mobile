@@ -8,13 +8,18 @@ import { Icon } from "./ui/icon";
 
 type Props = ComponentProps<typeof GluestackLink> & {
   title: string;
+  href?: string;
   iconLeft?: React.ElementType;
   iconRight?: React.ElementType;
 };
 
-export function Link({ title, iconLeft, iconRight, ...rest }: Props) {
+export function Link({ title, iconLeft, iconRight, href, ...rest }: Props) {
   return (
-    <GluestackLink {...rest} className="flex-row items-center gap-4">
+    <GluestackLink
+      {...rest}
+      className="flex-row items-center gap-4"
+      href={href}
+    >
       {iconLeft && (
         <Icon
           as={iconLeft}

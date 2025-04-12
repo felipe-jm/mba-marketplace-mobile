@@ -3,16 +3,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { cn } from "@/utils/cn";
 
 type WrapperProps = {
-  backgroundColor?: string;
+  className?: string;
   children: React.ReactNode;
 };
 
-export function Wrapper({
-  children,
-  backgroundColor = "bg-custom-shape-white",
-}: WrapperProps) {
+export function Wrapper({ children, className }: WrapperProps) {
   return (
-    <SafeAreaView className={cn("flex-1 font-poppins", backgroundColor)}>
+    <SafeAreaView className={cn("flex-1 font-poppins", className)}>
       {children}
     </SafeAreaView>
   );
