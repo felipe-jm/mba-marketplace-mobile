@@ -1,11 +1,6 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, SafeAreaView } from "react-native";
 
-import {
-  ArrowRight,
-  Filter,
-  Search,
-  SlidersVertical,
-} from "lucide-react-native";
+import { ArrowRight, Search, SlidersVertical } from "lucide-react-native";
 
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
@@ -15,6 +10,7 @@ import { Avatar } from "@/components/avatar";
 import { Link } from "@/components/link";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
+import { ProductCard, PRODUCTS } from "@/components/product-card";
 
 export default function ProductsScreen() {
   return (
@@ -50,6 +46,20 @@ export default function ProductsScreen() {
             </HStack>
           </VStack>
         </Box>
+
+        <FlatList
+          data={PRODUCTS}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          renderItem={({ item }) => <ProductCard product={item} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingVertical: 16 }}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
+            gap: 8,
+          }}
+          className="flex-1 px-4"
+        />
       </Box>
     </SafeAreaView>
   );
