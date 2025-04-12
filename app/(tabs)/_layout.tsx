@@ -1,5 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
+import { Icon } from "@/components/ui/icon";
+import { Store, User } from "lucide-react-native";
 
 export default function TabLayout() {
   return (
@@ -12,15 +14,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Produtos",
-          // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "PRODUTOS",
+          // TODO: Get color from theme
+          tabBarActiveTintColor: "#F24D0D",
+          tabBarInactiveTintColor: "#ADADAD",
+          tabBarIcon: ({ color }) => <Icon as={Store} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Perfil",
-          // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "PERFIL",
+          // TODO: Get color from theme
+          tabBarActiveTintColor: "#F24D0D",
+          tabBarInactiveTintColor: "#ADADAD",
+          tabBarIcon: ({ color }) => <Icon as={User} color={color} />,
         }}
       />
     </Tabs>
