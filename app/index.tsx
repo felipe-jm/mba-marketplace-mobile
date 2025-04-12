@@ -1,4 +1,4 @@
-import { Eye, Mail } from "lucide-react-native";
+import { Eye, KeyRound, Mail, ArrowRight } from "lucide-react-native";
 
 import Logo from "@/assets/images/logo.svg";
 
@@ -7,52 +7,54 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/input";
 import { VStack } from "@/components/ui/vstack";
 import { Button } from "@/components/button";
-import { Link } from "@/components/link";
-import { Checkbox } from "@/components/checkbox";
+import { Wrapper } from "@/components/wrapper";
 
 export default function Index() {
   return (
-    <Box className="bg-custom-shape-white flex-1 p-10 items-center justify-center">
-      <Logo />
-      <Text className="font-poppins text-3xl">Sign In</Text>
+    <Wrapper>
+      <Box className="p-10 flex-1 items-center justify-between">
+        <VStack className="w-full items-center">
+          <Logo />
 
-      <VStack className="w-full gap-4">
-        <Input
-          label="Label"
-          placeholder="Placeholder"
-          iconLeft={Mail}
-          iconRight={Eye}
-        />
+          <VStack className="mt-12 gap-2">
+            <Text className="font-dmsans text-custom-gray-500 text-3xl">
+              Acesse sua conta
+            </Text>
+            <Text className="text-custom-gray-300 text-sm">
+              Informe seu e-mail e senha para entrar
+            </Text>
+          </VStack>
 
-        <Input
-          label="Invalid Input"
-          placeholder="Invalid Input"
-          isInvalid
-          iconLeft={Mail}
-          iconRight={Eye}
-        />
+          <VStack className="w-full gap-6 mt-12">
+            <Input
+              label="E-mail"
+              placeholder="mail@exemplo.br"
+              iconLeft={Mail}
+              iconRight={Eye}
+            />
+            <Input
+              label="Senha"
+              placeholder="Sua senha"
+              iconLeft={KeyRound}
+              iconRight={Eye}
+            />
 
-        <Input
-          label="Error Input"
-          placeholder="Error Input"
-          errorMessage="Error Message"
-          iconLeft={Mail}
-          iconRight={Eye}
-        />
+            <Button
+              title="Entrar"
+              className="mt-5"
+              showBoxShadow
+              iconRight={ArrowRight}
+            />
+          </VStack>
+        </VStack>
 
-        <Button title="Button" iconLeft={Mail} iconRight={Eye} />
-
-        <Button
-          title="Button"
-          variant="outline"
-          iconLeft={Mail}
-          iconRight={Eye}
-        />
-
-        <Link title="Link" iconLeft={Mail} iconRight={Eye} />
-
-        <Checkbox label="Checkbox" value="checkbox" />
-      </VStack>
-    </Box>
+        <VStack className="w-full gap-6">
+          <Text className="text-custom-gray-300 text-md">
+            Ainda não tem uma conta?
+          </Text>
+          <Button title="Cadastrar" variant="outline" iconRight={ArrowRight} />
+        </VStack>
+      </Box>
+    </Wrapper>
   );
 }

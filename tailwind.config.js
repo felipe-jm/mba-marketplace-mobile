@@ -208,8 +208,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        heading: undefined,
-        body: undefined,
+        heading: "DMSans_700Bold",
+        body: "Poppins_400Regular",
         mono: undefined,
         roboto: ["Roboto", "sans-serif"],
 

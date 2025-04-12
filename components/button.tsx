@@ -14,6 +14,7 @@ type Props = ComponentProps<typeof GluestackButton> & {
   title: string;
   variant?: "solid" | "outline";
   isLoading?: boolean;
+  showBoxShadow?: boolean;
   iconLeft?: React.ElementType;
   iconRight?: React.ElementType;
 };
@@ -22,23 +23,28 @@ export function Button({
   title,
   isLoading = false,
   variant = "solid",
+  showBoxShadow = false,
   iconLeft,
   iconRight,
+  className,
   ...rest
 }: Props) {
   return (
     <GluestackButton
       {...rest}
       className={cn(
-        "w-full rounded-xl h-14",
+        "w-full rounded-xl h-16 justify-between",
         variant === "outline"
           ? "bg-transparent border border-custom-orange-base"
-          : "bg-custom-orange-base"
+          : "bg-custom-orange-base",
+        className
       )}
       disabled={isLoading}
-      // style={{
-      //   boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-      // }}
+      style={{
+        boxShadow: showBoxShadow
+          ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+          : "none",
+      }}
     >
       {iconLeft && (
         <Icon
@@ -61,7 +67,7 @@ export function Button({
       ) : (
         <ButtonText
           className={cn(
-            "text-white",
+            "text-white text-xl font-poppins-medium",
             variant === "outline" ? "text-custom-orange-base" : "text-white"
           )}
         >

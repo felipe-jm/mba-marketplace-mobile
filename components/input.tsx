@@ -66,7 +66,7 @@ export function Input({
         style={{
           // TODO: get colors from theme
           borderBottomColor: isFocused ? "#3D3D3D" : "#666666",
-          borderBottomWidth: 1,
+          borderBottomWidth: 0.5,
         }}
       >
         {iconLeft && (
@@ -82,7 +82,7 @@ export function Input({
           </InputSlot>
         )}
         <InputField
-          className={cn("px-4 py-2", className)}
+          className={cn("px-4 py-2 font-poppins text-md", className)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           {...rest}
