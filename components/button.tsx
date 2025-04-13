@@ -37,8 +37,8 @@ export function Button({
       {...rest}
       className={cn(
         "w-full rounded-xl h-16",
-        // Use justify-between only when there are icons
-        hasIcons ? "justify-between" : "justify-center",
+        // Use justify-between only when there are icons and not loading
+        hasIcons && !isLoading ? "justify-between" : "justify-center",
         variant === "outline"
           ? "bg-transparent border border-custom-orange-base"
           : "bg-custom-orange-base",
@@ -51,7 +51,8 @@ export function Button({
           : "none",
       }}
     >
-      {iconLeft && (
+      {/* Show left icon only if not loading */}
+      {!isLoading && iconLeft && (
         <Icon
           as={iconLeft}
           className={cn(
@@ -80,7 +81,8 @@ export function Button({
         </ButtonText>
       )}
 
-      {iconRight && (
+      {/* Show right icon only if not loading */}
+      {!isLoading && iconRight && (
         <Icon
           as={iconRight}
           className={cn(
