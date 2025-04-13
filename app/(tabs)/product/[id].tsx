@@ -14,6 +14,7 @@ import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/link";
 import { ToastMessage } from "@/components/toast-message";
 import { useToast } from "@/components/ui/toast";
+import { Loading } from "@/components/loading";
 
 import { ProductDTO } from "@/dtos/product-dto";
 import { api } from "@/services/api";
@@ -26,6 +27,8 @@ export default function Product() {
 
   const [product, setProduct] = useState<ProductDTO | null>(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleGoBack = () => {
     router.push("/(tabs)");
   };
@@ -33,8 +36,11 @@ export default function Product() {
   useEffect(() => {
     async function fetchProduct() {
       try {
+        setIsLoading(true);
+
         const response = await api.get(`/products/${id}`);
-        setProduct(response.data);
+
+        setProduct(response.data.product);
       } catch (error) {
         const isAppError = error instanceof AppError;
 
@@ -51,6 +57,8 @@ export default function Product() {
             />
           ),
         });
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -59,58 +67,62 @@ export default function Product() {
 
   return (
     <Wrapper className="bg-custom-shape-shape p-6">
-      <VStack className="flex-1">
-        <Link
-          title="Voltar"
-          className="w-12 h-12 rounded-xl justify-center items-center"
-          iconLeft={ArrowLeft}
-          onPress={handleGoBack}
-        />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <VStack className="flex-1">
+          <Link
+            title="Voltar"
+            className="w-12 h-12 rounded-xl justify-center items-center"
+            iconLeft={ArrowLeft}
+            onPress={handleGoBack}
+          />
 
-        <Image
-          source={{ uri: product?.image }}
-          className="w-full h-60 rounded-xl my-8"
-          resizeMode="cover"
-          alt={product?.title || "Imagem do produto"}
-        />
+          <Image
+            source={{ uri: product?.image }}
+            className="w-full h-60 rounded-xl my-8"
+            resizeMode="cover"
+            alt={product?.title || "Imagem do produto"}
+          />
 
-        <VStack className="flex-1 gap-6">
-          <HStack className="justify-between">
-            <Text className="font-dmsans text-xl  text-custom-gray-400">
-              {product?.title}
+          <VStack className="flex-1 gap-6">
+            <HStack className="justify-between">
+              <Text className="font-dmsans text-xl  text-custom-gray-400">
+                {product?.title}
+              </Text>
+              <HStack className="items-baseline">
+                <Text className="text-xs text-custom-gray-500">R$ </Text>
+                <Text className="font-dmsans text-xl text-custom-gray-500">
+                  {product?.priceInCents.toFixed(2).replace(".", ",")}
+                </Text>
+              </HStack>
+            </HStack>
+
+            <Text className="text-sm text-custom-gray-400">
+              {product?.description}
             </Text>
-            <HStack className="items-baseline">
-              <Text className="text-xs text-custom-gray-500">R$ </Text>
-              <Text className="font-dmsans text-xl text-custom-gray-500">
-                {product?.priceInCents.toFixed(2).replace(".", ",")}
+
+            <VStack className="gap-2">
+              <Text className="text-sm font-dmsans text-custom-gray-500">
+                Categoria
+              </Text>
+              <Text className="text-sm text-custom-gray-400">Móvel</Text>
+            </VStack>
+
+            <HStack className="gap-2 bg-custom-blue-light rounded-xl p-4 ">
+              <Box className="w-9 h-9 rounded-xl bg-custom-blue-dark items-center justify-center">
+                <Icon as={ChartNoAxesCombined} color="white" />
+              </Box>
+              <Text className="text-sm flex-1">
+                <Text className="font-poppins-medium text-custom-gray-500">
+                  24 pessoas{" "}
+                </Text>
+                visualizaram este produto nos últimos 7 dias
               </Text>
             </HStack>
-          </HStack>
-
-          <Text className="text-sm text-custom-gray-400">
-            {product?.description}
-          </Text>
-
-          <VStack className="gap-2">
-            <Text className="text-sm font-dmsans text-custom-gray-500">
-              Categoria
-            </Text>
-            <Text className="text-sm text-custom-gray-400">Móvel</Text>
           </VStack>
-
-          <HStack className="gap-2 bg-custom-blue-light rounded-xl p-4 ">
-            <Box className="w-9 h-9 rounded-xl bg-custom-blue-dark items-center justify-center">
-              <Icon as={ChartNoAxesCombined} color="white" />
-            </Box>
-            <Text className="text-sm flex-1">
-              <Text className="font-poppins-medium text-custom-gray-500">
-                24 pessoas{" "}
-              </Text>
-              visualizaram este produto nos últimos 7 dias
-            </Text>
-          </HStack>
         </VStack>
-      </VStack>
+      )}
     </Wrapper>
   );
 }

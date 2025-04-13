@@ -18,13 +18,14 @@ import {
   FilterBottomSheetRefProps,
   FilterData,
 } from "@/components/filter-bottom-sheet";
+import { ToastMessage } from "@/components/toast-message";
+import { useToast } from "@/components/ui/toast";
+import { Loading } from "@/components/loading";
 
 import { useAuth } from "@/hooks/useAuth";
 import { ProductDTO } from "@/dtos/product-dto";
 import { api } from "@/services/api";
 import { AppError } from "@/utils/app-error";
-import { ToastMessage } from "@/components/toast-message";
-import { useToast } from "@/components/ui/toast";
 
 export default function ProductsScreen() {
   const { user } = useAuth();
@@ -34,6 +35,8 @@ export default function ProductsScreen() {
   const filterBottomSheetRef = useRef<FilterBottomSheetRefProps>(null);
 
   const [products, setProducts] = useState<ProductDTO[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   function handleOpenFiltersModal() {
     filterBottomSheetRef.current?.open();
@@ -51,6 +54,8 @@ export default function ProductsScreen() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        setIsLoading(true);
+
         const response = await api.get("/products");
 
         setProducts(response.data.products);
@@ -70,6 +75,8 @@ export default function ProductsScreen() {
             />
           ),
         });
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -115,19 +122,23 @@ export default function ProductsScreen() {
           </VStack>
         </Box>
 
-        <FlatList
-          data={products}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          renderItem={({ item }) => <ProductCard product={item} />}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingVertical: 16 }}
-          columnWrapperStyle={{
-            justifyContent: "space-between",
-            gap: 8,
-          }}
-          className="flex-1 px-4"
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={products}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            renderItem={({ item }) => <ProductCard product={item} />}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingVertical: 16 }}
+            columnWrapperStyle={{
+              justifyContent: "space-between",
+              gap: 8,
+            }}
+            className="flex-1 px-4"
+          />
+        )}
 
         <FilterBottomSheet
           ref={filterBottomSheetRef}
