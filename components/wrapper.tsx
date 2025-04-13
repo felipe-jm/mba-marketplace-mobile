@@ -9,7 +9,9 @@ type WrapperProps = {
 
 export function Wrapper({ children, className }: WrapperProps) {
   return (
-    <SafeAreaView className={cn("flex-1 font-poppins", className)}>
+    <SafeAreaView
+      className={cn("flex-1 font-poppins", "bg-custom-shape-white", className)}
+    >
       {children}
     </SafeAreaView>
   );

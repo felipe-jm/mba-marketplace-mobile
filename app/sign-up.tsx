@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ScrollView } from "react-native";
 import { router } from "expo-router";
 
@@ -10,6 +11,10 @@ import {
   Phone,
 } from "lucide-react-native";
 
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 import Logo from "@/assets/images/logo.svg";
 
 import { Box } from "@/components/ui/box";
@@ -19,10 +24,108 @@ import { VStack } from "@/components/ui/vstack";
 import { Button } from "@/components/button";
 import { Wrapper } from "@/components/wrapper";
 import { AvatarUpload } from "@/components/avatar-upload";
+import { useToast } from "@/components/ui/toast";
+import { ToastMessage } from "@/components/toast-message";
+
+import { useAuth } from "@/hooks/useAuth";
+
+import { api } from "@/services/api";
+import { saveUserStorage } from "@/storage/user";
+import { AppError } from "@/utils/app-error";
+
+type SignUpFormData = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  password_confirm: string;
+};
+
+const signUpSchema = z
+  .object({
+    name: z.string().min(1, "Nome é obrigatório"),
+    email: z.string().email("E-mail inválido"),
+    phone: z.string().min(1, "Telefone é obrigatório"),
+    password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+    password_confirm: z
+      .string()
+      .min(6, "Senha deve ter pelo menos 6 caracteres"),
+  })
+  .refine((data) => data.password === data.password_confirm, {
+    message: "As senhas não coincidem",
+    path: ["password_confirm"],
+  });
 
 export default function SignUp() {
+  const { signIn } = useAuth();
+
+  const toast = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      password_confirm: "",
+    },
+  });
+
   function handleNavigateToSignIn() {
     router.push("/");
+  }
+
+  async function handleSignUp({
+    name,
+    email,
+    phone,
+    password,
+    password_confirm,
+  }: SignUpFormData) {
+    try {
+      setIsLoading(true);
+
+      const response = await api.post("/sellers", {
+        name,
+        email,
+        phone,
+        password,
+        passwordConfirmation: password_confirm,
+      });
+
+      await saveUserStorage(response.data);
+
+      await signIn(email, password);
+
+      router.push("/(tabs)");
+    } catch (error) {
+      console.log(error);
+
+      const isAppError = error instanceof AppError;
+
+      const title = isAppError ? error.message : "Erro ao criar usuário";
+
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="error"
+            title={title}
+            onClose={() => toast.close(id)}
+          />
+        ),
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -41,57 +144,105 @@ export default function SignUp() {
               </Text>
             </VStack>
 
-            <AvatarUpload />
+            <AvatarUpload className="bg-custom-shape-shape" />
 
             <VStack className="w-full gap-6 mt-12">
-              <Input
-                label="Nome"
-                placeholder="Seu nome completo"
-                iconLeft={User}
-              />
-              <Input
-                label="Telefone"
-                placeholder="(00) 00000-0000"
-                iconLeft={Phone}
+              <Controller
+                control={control}
+                name="name"
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    label="Nome"
+                    placeholder="Seu nome completo"
+                    iconLeft={User}
+                    value={value}
+                    onChangeText={onChange}
+                    errorMessage={errors.name?.message}
+                  />
+                )}
               />
 
-              <VStack className="w-full gap-2">
+              <Controller
+                control={control}
+                name="phone"
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    label="Telefone"
+                    placeholder="(00) 00000-0000"
+                    iconLeft={Phone}
+                    value={value}
+                    onChangeText={onChange}
+                    errorMessage={errors.phone?.message}
+                  />
+                )}
+              />
+
+              <VStack className="w-full gap-6">
                 <Text className="font-dmsans text-custom-gray-500 text-md mb-2">
                   Acesso
                 </Text>
 
-                <Input
-                  label="E-mail"
-                  placeholder="mail@exemplo.br"
-                  autoCapitalize="none"
-                  iconLeft={Mail}
-                  iconRight={Eye}
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="E-mail"
+                      placeholder="mail@exemplo.br"
+                      autoCapitalize="none"
+                      iconLeft={Mail}
+                      iconRight={Eye}
+                      value={value}
+                      onChangeText={onChange}
+                      errorMessage={errors.email?.message}
+                    />
+                  )}
                 />
 
-                <Input
-                  label="Senha"
-                  placeholder="Sua senha"
-                  secureTextEntry
-                  autoCapitalize="none"
-                  iconLeft={KeyRound}
-                  iconRight={Eye}
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="Senha"
+                      placeholder="Sua senha"
+                      secureTextEntry
+                      autoCapitalize="none"
+                      iconLeft={KeyRound}
+                      iconRight={Eye}
+                      value={value}
+                      onChangeText={onChange}
+                      errorMessage={errors.password?.message}
+                    />
+                  )}
                 />
 
-                <Input
-                  label="Confirmar senha"
-                  placeholder="Confirme sua senha"
-                  secureTextEntry
-                  autoCapitalize="none"
-                  iconLeft={KeyRound}
-                  iconRight={Eye}
+                <Controller
+                  control={control}
+                  name="password_confirm"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      label="Confirmar senha"
+                      placeholder="Confirme a senha"
+                      secureTextEntry
+                      autoCapitalize="none"
+                      iconLeft={KeyRound}
+                      iconRight={Eye}
+                      value={value}
+                      onChangeText={onChange}
+                      errorMessage={errors.password_confirm?.message}
+                    />
+                  )}
                 />
               </VStack>
 
               <Button
-                title="Entrar"
+                title="Cadastrar"
                 className="mt-5"
                 showBoxShadow
                 iconRight={ArrowRight}
+                onPress={handleSubmit(handleSignUp)}
+                isLoading={isLoading}
               />
             </VStack>
           </VStack>

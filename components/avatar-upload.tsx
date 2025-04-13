@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { TouchableOpacity } from "react-native";
+import { Image as ImageIcon } from "lucide-react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -9,9 +10,13 @@ import { Box } from "./ui/box";
 import { Icon } from "./ui/icon";
 import { Image } from "./ui/image";
 
-import { Image as ImageIcon } from "lucide-react-native";
+import { cn } from "@/utils/cn";
 
-export function AvatarUpload() {
+type AvatarUploadProps = {
+  className?: string;
+};
+
+export function AvatarUpload({ className }: AvatarUploadProps) {
   const [avatar, setAvatar] = useState<string | null>(null);
 
   async function handleAvatarUpload() {
@@ -38,7 +43,12 @@ export function AvatarUpload() {
 
   return (
     <TouchableOpacity onPress={handleAvatarUpload}>
-      <Box className="w-36 h-36 items-center justify-center rounded-lg bg-custom-shape-white">
+      <Box
+        className={cn(
+          "w-36 h-36 items-center justify-center rounded-lg bg-custom-shape-white",
+          className
+        )}
+      >
         {avatar ? (
           <Image
             source={{ uri: avatar || "https://github.com/felipe-jm.png" }}
