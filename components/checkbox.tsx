@@ -21,7 +21,7 @@ export function Checkbox({
 }: Props) {
   return (
     <GluestackCheckbox
-      size="md"
+      size="lg"
       isInvalid={isInvalid}
       isDisabled={isDisabled}
       {...rest}

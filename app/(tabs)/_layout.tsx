@@ -1,7 +1,7 @@
-import React from "react";
 import { Tabs } from "expo-router";
-import { Icon } from "@/components/ui/icon";
 import { Store, User } from "lucide-react-native";
+
+import { Icon } from "@/components/ui/icon";
 
 export default function TabLayout() {
   return (

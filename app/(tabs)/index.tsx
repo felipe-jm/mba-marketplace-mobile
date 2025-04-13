@@ -1,5 +1,5 @@
 import { FlatList, SafeAreaView } from "react-native";
-
+import { useRef } from "react";
 import { router } from "expo-router";
 
 import { ArrowRight, Search, SlidersVertical } from "lucide-react-native";
@@ -13,16 +13,28 @@ import { Link } from "@/components/link";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 import { ProductCard } from "@/components/product-card";
+import {
+  FilterBottomSheet,
+  FilterBottomSheetRefProps,
+  FilterData,
+} from "@/components/filter-bottom-sheet";
 
 import { PRODUCTS } from "@/data/products";
 
 export default function ProductsScreen() {
+  const filterBottomSheetRef = useRef<FilterBottomSheetRefProps>(null);
+
   function handleOpenFiltersModal() {
-    router.push("/modal");
+    filterBottomSheetRef.current?.open();
   }
 
   function handleOpenProfile() {
     router.push("/(tabs)/profile");
+  }
+
+  function handleApplyFilters(filters: FilterData) {
+    console.log("Aplicando filtros:", filters);
+    // Implementar lógica para aplicar os filtros
   }
 
   return (
@@ -51,17 +63,14 @@ export default function ProductsScreen() {
 
             <HStack className="w-full gap-2 mt-4 items-center">
               <Box className="flex-1">
-                <Input
-                  placeholder="Pesquisar"
-                  iconLeft={Search}
-                  onPress={handleOpenFiltersModal}
-                />
+                <Input placeholder="Pesquisar" iconLeft={Search} />
               </Box>
 
               <Button
                 className="w-12 h-12 rounded-xl justify-center items-center"
                 iconRight={SlidersVertical}
                 variant="outline"
+                onPress={handleOpenFiltersModal}
               />
             </HStack>
           </VStack>
@@ -79,6 +88,11 @@ export default function ProductsScreen() {
             gap: 8,
           }}
           className="flex-1 px-4"
+        />
+
+        <FilterBottomSheet
+          ref={filterBottomSheetRef}
+          onApplyFilters={handleApplyFilters}
         />
       </Box>
     </SafeAreaView>

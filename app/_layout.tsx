@@ -1,5 +1,7 @@
 import "@/global.css";
 import "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
@@ -58,18 +60,18 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <GluestackUIProvider mode="light">
-      <ThemeProvider value={DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="sign-up" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", headerShown: false }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </GluestackUIProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GluestackUIProvider mode="light">
+        <ThemeProvider value={DefaultTheme}>
+          <BottomSheetModalProvider>
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </BottomSheetModalProvider>
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </GestureHandlerRootView>
   );
 }
