@@ -25,7 +25,9 @@ export function ToastMessage({
       nativeID={`toast-${id}`}
       action={action}
       className={`${
-        action === "success" ? "bg-brand-green-500" : "bg-brand-red-500"
+        action === "success"
+          ? "bg-custom-semantic-success"
+          : "bg-custom-semantic-error"
       } mt-10 w-full`}
     >
       <VStack space="xs">
