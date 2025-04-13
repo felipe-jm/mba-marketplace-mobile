@@ -60,12 +60,12 @@ api.registerInterceptTokenManager = (singOut) => {
 
           return new Promise(async (resolve, reject) => {
             try {
-              const { data } = await api.post("/sessions/refresh-token", {
+              const { data } = await api.post("/sessions/refresh", {
                 refresh_token,
               });
 
               await storageAuthToken({
-                token: data.token,
+                access_token: data.access_token,
                 refresh_token: data.refresh_token,
               });
 

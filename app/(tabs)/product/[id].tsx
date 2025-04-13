@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useLocalSearchParams, router } from "expo-router";
 
 import { ArrowLeft, ChartNoAxesCombined } from "lucide-react-native";
@@ -11,17 +12,50 @@ import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/link";
+import { ToastMessage } from "@/components/toast-message";
+import { useToast } from "@/components/ui/toast";
 
-import { PRODUCTS } from "@/data/products";
+import { ProductDTO } from "@/dtos/product-dto";
+import { api } from "@/services/api";
+import { AppError } from "@/utils/app-error";
 
 export default function Product() {
   const { id } = useLocalSearchParams();
+
+  const toast = useToast();
+
+  const [product, setProduct] = useState<ProductDTO | null>(null);
 
   const handleGoBack = () => {
     router.push("/(tabs)");
   };
 
-  const product = PRODUCTS.find((product) => product.id === id);
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const response = await api.get(`/products/${id}`);
+        setProduct(response.data);
+      } catch (error) {
+        const isAppError = error instanceof AppError;
+
+        const title = isAppError ? error.message : "Erro ao carregar produtos.";
+
+        toast.show({
+          placement: "top",
+          render: ({ id }) => (
+            <ToastMessage
+              id={id}
+              action="error"
+              title={title}
+              onClose={() => toast.close(id)}
+            />
+          ),
+        });
+      }
+    }
+
+    fetchProduct();
+  }, [id]);
 
   return (
     <Wrapper className="bg-custom-shape-shape p-6">
@@ -37,18 +71,18 @@ export default function Product() {
           source={{ uri: product?.image }}
           className="w-full h-60 rounded-xl my-8"
           resizeMode="cover"
-          alt={product?.name}
+          alt={product?.title || "Imagem do produto"}
         />
 
         <VStack className="flex-1 gap-6">
           <HStack className="justify-between">
             <Text className="font-dmsans text-xl  text-custom-gray-400">
-              {product?.name}
+              {product?.title}
             </Text>
             <HStack className="items-baseline">
               <Text className="text-xs text-custom-gray-500">R$ </Text>
               <Text className="font-dmsans text-xl text-custom-gray-500">
-                {product?.price.toFixed(2).replace(".", ",")}
+                {product?.priceInCents.toFixed(2).replace(".", ",")}
               </Text>
             </HStack>
           </HStack>

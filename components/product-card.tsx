@@ -20,16 +20,16 @@ export function ProductCard({ product }: ProductCardProps) {
           source={{ uri: product.image }}
           className="w-full h-36 rounded-xl mb-2"
           resizeMode="cover"
-          alt={product.name}
+          alt={product.title}
         />
         <VStack className="p-2">
           <Text className="text-custom-gray-400 text-md mb-1">
-            {product.name}
+            {product.title}
           </Text>
           <HStack className="items-baseline">
             <Text className="text-xs text-custom-gray-500">R$ </Text>
             <Text className="font-dmsans text-lg text-custom-gray-500">
-              {product.price.toFixed(2).replace(".", ",")}
+              {product.priceInCents.toFixed(2).replace(".", ",")}
             </Text>
           </HStack>
         </VStack>

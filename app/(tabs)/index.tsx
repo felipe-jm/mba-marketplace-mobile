@@ -1,5 +1,5 @@
 import { FlatList, SafeAreaView } from "react-native";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 
 import { ArrowRight, Search, SlidersVertical } from "lucide-react-native";
@@ -19,14 +19,21 @@ import {
   FilterData,
 } from "@/components/filter-bottom-sheet";
 
-import { PRODUCTS } from "@/data/products";
-
 import { useAuth } from "@/hooks/useAuth";
+import { ProductDTO } from "@/dtos/product-dto";
+import { api } from "@/services/api";
+import { AppError } from "@/utils/app-error";
+import { ToastMessage } from "@/components/toast-message";
+import { useToast } from "@/components/ui/toast";
 
 export default function ProductsScreen() {
   const { user } = useAuth();
 
+  const toast = useToast();
+
   const filterBottomSheetRef = useRef<FilterBottomSheetRefProps>(null);
+
+  const [products, setProducts] = useState<ProductDTO[]>([]);
 
   function handleOpenFiltersModal() {
     filterBottomSheetRef.current?.open();
@@ -40,6 +47,34 @@ export default function ProductsScreen() {
     console.log("Aplicando filtros:", filters);
     // Implementar lógica para aplicar os filtros
   }
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await api.get("/products");
+
+        setProducts(response.data.products);
+      } catch (error) {
+        const isAppError = error instanceof AppError;
+
+        const title = isAppError ? error.message : "Erro ao carregar produtos.";
+
+        toast.show({
+          placement: "top",
+          render: ({ id }) => (
+            <ToastMessage
+              id={id}
+              action="error"
+              title={title}
+              onClose={() => toast.close(id)}
+            />
+          ),
+        });
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-custom-shape-white">
@@ -81,7 +116,7 @@ export default function ProductsScreen() {
         </Box>
 
         <FlatList
-          data={PRODUCTS}
+          data={products}
           keyExtractor={(item) => item.id}
           numColumns={2}
           renderItem={({ item }) => <ProductCard product={item} />}

@@ -42,13 +42,13 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
 
   async function storageUserAndToken(
     userData: UserDTO,
-    token: string,
+    access_token: string,
     refresh_token: string
   ) {
     try {
       setIsLoadingUserStorageData(true);
 
-      await storageAuthToken({ token, refresh_token });
+      await storageAuthToken({ access_token, refresh_token });
       await saveUserStorage(userData);
     } catch (error) {
       throw error;
@@ -61,9 +61,13 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
     try {
       const { data } = await api.post("/sessions", { email, password });
 
-      if (data.user && data.token && data.refresh_token) {
-        await storageUserAndToken(data.user, data.token, data.refresh_token);
-        updateUserAndTokenStorage(data.user, data.token);
+      if (data.seller && data.access_token && data.refresh_token) {
+        await storageUserAndToken(
+          data.seller,
+          data.access_token,
+          data.refresh_token
+        );
+        updateUserAndTokenStorage(data.seller, data.access_token);
       }
     } catch (err) {
       throw err;
@@ -99,10 +103,10 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
       setIsLoadingUserStorageData(true);
 
       const loggedUser = await getUserStorage();
-      const { token } = await getAuthToken();
+      const { access_token } = await getAuthToken();
 
-      if (loggedUser.id && token) {
-        updateUserAndTokenStorage(loggedUser, token);
+      if (loggedUser.id && access_token) {
+        updateUserAndTokenStorage(loggedUser, access_token);
       }
     } catch (error) {
       throw error;
