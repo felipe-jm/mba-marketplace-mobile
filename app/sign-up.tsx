@@ -62,6 +62,7 @@ export default function SignUp() {
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarId, setAvatarId] = useState<string | null>(null);
 
   const {
     control,
@@ -73,6 +74,7 @@ export default function SignUp() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       password_confirm: "",
     },
@@ -80,6 +82,10 @@ export default function SignUp() {
 
   function handleNavigateToSignIn() {
     router.push("/");
+  }
+
+  function handleAvatarUploadSuccess(id: string) {
+    setAvatarId(id);
   }
 
   async function handleSignUp({
@@ -98,6 +104,7 @@ export default function SignUp() {
         phone,
         password,
         passwordConfirmation: password_confirm,
+        avatarId: avatarId,
       });
 
       await saveUserStorage(response.data);
@@ -144,7 +151,10 @@ export default function SignUp() {
               </Text>
             </VStack>
 
-            <AvatarUpload className="bg-custom-shape-shape" />
+            <AvatarUpload
+              className="bg-custom-shape-shape"
+              onUploadSuccess={handleAvatarUploadSuccess}
+            />
 
             <VStack className="w-full gap-6 mt-12">
               <Controller

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
+import { router } from "expo-router";
 
 import { UserDTO } from "@/dtos/user-dto";
 import { api } from "@/services/api";
@@ -67,7 +68,10 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
           data.access_token,
           data.refresh_token
         );
+
         updateUserAndTokenStorage(data.seller, data.access_token);
+
+        router.navigate("/(tabs)");
       }
     } catch (err) {
       throw err;
@@ -81,6 +85,8 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
       setUser({} as UserDTO);
       await removeUserStorage();
       await removeAuthToken();
+
+      router.navigate("/");
     } catch (error) {
       throw error;
     } finally {
@@ -92,7 +98,7 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
     try {
       setUser(updatedUser);
 
-      await saveUserStorage(updatedUser);
+      router.navigate("/(tabs)");
     } catch (error) {
       throw error;
     }

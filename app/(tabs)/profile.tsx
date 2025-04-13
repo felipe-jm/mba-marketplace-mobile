@@ -88,18 +88,65 @@ export default function ProfileScreen() {
 
   const [isUpdating, setIsUpdating] = useState(false);
 
+  async function handleAvatarUpdate(avatarId: string) {
+    try {
+      const response = await api.put("/me/avatar", {
+        avatarId: avatarId,
+      });
+
+      const newAvatarUrl = response.data.avatarUrl;
+
+      const updatedUser = {
+        ...user,
+        avatar: newAvatarUrl,
+      };
+
+      await updateUserProfile(updatedUser);
+
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="success"
+            title="Avatar atualizado com sucesso!"
+            onClose={() => toast.close(id)}
+          />
+        ),
+      });
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      const title = isAppError ? error.message : "Erro ao atualizar avatar";
+
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="error"
+            title={title}
+            onClose={() => toast.close(id)}
+          />
+        ),
+      });
+    }
+  }
+
   async function handleProfileUpdate(data: ProfileFormDataProps) {
     try {
       setIsUpdating(true);
 
       const updatedUser = user;
       updatedUser.name = data.name;
+      updatedUser.phone = data.phone;
 
-      await api.put("/users", {
+      await api.put("/sellers/me", {
         name: data.name,
         email: data.email,
+        phone: data.phone,
         password: data.password,
-        current_password: data.current_password,
+        passwordConfirmation: data.current_password,
       });
 
       await updateUserProfile(updatedUser);
@@ -144,7 +191,10 @@ export default function ProfileScreen() {
             <Box className="w-12 h-12" />
 
             <Box className="items-center">
-              <AvatarUpload />
+              <AvatarUpload
+                avatarUrl={user.avatarUrl}
+                onUploadSuccess={handleAvatarUpdate}
+              />
             </Box>
 
             <Box>

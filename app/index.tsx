@@ -60,8 +60,6 @@ export default function Index() {
       setIsLoading(true);
 
       await signIn(email, password);
-
-      router.push("/(tabs)");
     } catch (error) {
       const isAppError = error instanceof AppError;
 
