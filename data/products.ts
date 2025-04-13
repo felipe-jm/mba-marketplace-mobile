@@ -1,6 +1,6 @@
-import { Product } from "@/dtos/product";
+import { ProductDTO } from "@/dtos/product-dto";
 
-export const PRODUCTS: Product[] = [
+export const PRODUCTS: ProductDTO[] = [
   {
     id: "1",
     name: "Sofá",

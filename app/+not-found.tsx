@@ -1,19 +1,21 @@
 import React from "react";
 
 import { Link, Stack } from "expo-router";
-import { Text, View } from "react-native";
+
+import { Text } from "@/components/ui/text";
+import { Box } from "@/components/ui/box";
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
-      <View>
-        <Text>This screen doesn't exist.</Text>
+      <Box>
+        <Text>Esta tela não existe.</Text>
 
         <Link href="/">
-          <Text>Go to home screen!</Text>
+          <Text>Voltar para a tela inicial</Text>
         </Link>
-      </View>
+      </Box>
     </>
   );
 }

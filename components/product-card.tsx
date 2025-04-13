@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 
-import { Product } from "@/dtos/product";
+import { ProductDTO } from "@/dtos/product-dto";
 
 import { Box } from "./ui/box";
 import { Image } from "./ui/image";
@@ -9,7 +9,7 @@ import { VStack } from "./ui/vstack";
 import { HStack } from "./ui/hstack";
 
 type ProductCardProps = {
-  product: Product;
+  product: ProductDTO;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
