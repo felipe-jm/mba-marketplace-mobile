@@ -1,9 +1,17 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Store, User } from "lucide-react-native";
 
 import { Icon } from "@/components/ui/icon";
 
+import { useAuth } from "@/hooks/useAuth";
+
 export default function TabLayout() {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <Tabs
       screenOptions={{

@@ -21,7 +21,11 @@ import {
 
 import { PRODUCTS } from "@/data/products";
 
+import { useAuth } from "@/hooks/useAuth";
+
 export default function ProductsScreen() {
+  const { user } = useAuth();
+
   const filterBottomSheetRef = useRef<FilterBottomSheetRefProps>(null);
 
   function handleOpenFiltersModal() {
@@ -46,7 +50,7 @@ export default function ProductsScreen() {
 
             <VStack className="gap-2">
               <Text className="font-dmsans text-custom-gray-500 text-md">
-                Olá, Felipe!
+                Olá, {user.name}!
               </Text>
               <Link
                 title="Ver perfil"

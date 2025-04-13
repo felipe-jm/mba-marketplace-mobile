@@ -52,7 +52,7 @@ export default function Index() {
   });
 
   function handleNavigateToSignUp() {
-    router.push("/(tabs)");
+    router.push("/sign-up");
   }
 
   async function handleSignIn({ email, password }: SignInFormData) {
@@ -60,6 +60,8 @@ export default function Index() {
       setIsLoading(true);
 
       await signIn(email, password);
+
+      router.push("/(tabs)");
     } catch (error) {
       const isAppError = error instanceof AppError;
 
@@ -106,6 +108,7 @@ export default function Index() {
                 <Input
                   label="E-mail"
                   placeholder="mail@exemplo.br"
+                  autoCapitalize="none"
                   iconLeft={Mail}
                   iconRight={Eye}
                   errorMessage={errors.email?.message}
@@ -122,6 +125,8 @@ export default function Index() {
                 <Input
                   label="Senha"
                   placeholder="Sua senha"
+                  secureTextEntry
+                  autoCapitalize="none"
                   iconLeft={KeyRound}
                   iconRight={Eye}
                   errorMessage={errors.password?.message}

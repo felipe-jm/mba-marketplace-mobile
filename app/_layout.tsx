@@ -15,6 +15,7 @@ import {
   Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 import { DMSans_700Bold } from "@expo-google-fonts/dm-sans";
+import { AuthProvider } from "@/hooks/useAuth";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -58,11 +59,13 @@ function RootLayoutNav() {
       <GluestackUIProvider mode="light">
         <ThemeProvider value={DefaultTheme}>
           <BottomSheetModalProvider>
-            <Stack>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="sign-up" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
+            <AuthProvider>
+              <Stack>
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </AuthProvider>
           </BottomSheetModalProvider>
         </ThemeProvider>
       </GluestackUIProvider>

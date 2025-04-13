@@ -63,6 +63,7 @@ export default function SignUp() {
                 <Input
                   label="E-mail"
                   placeholder="mail@exemplo.br"
+                  autoCapitalize="none"
                   iconLeft={Mail}
                   iconRight={Eye}
                 />
@@ -70,6 +71,8 @@ export default function SignUp() {
                 <Input
                   label="Senha"
                   placeholder="Sua senha"
+                  secureTextEntry
+                  autoCapitalize="none"
                   iconLeft={KeyRound}
                   iconRight={Eye}
                 />
@@ -77,6 +80,8 @@ export default function SignUp() {
                 <Input
                   label="Confirmar senha"
                   placeholder="Confirme sua senha"
+                  secureTextEntry
+                  autoCapitalize="none"
                   iconLeft={KeyRound}
                   iconRight={Eye}
                 />
