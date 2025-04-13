@@ -110,7 +110,6 @@ export default function Index() {
                   placeholder="mail@exemplo.br"
                   autoCapitalize="none"
                   iconLeft={Mail}
-                  iconRight={Eye}
                   errorMessage={errors.email?.message}
                   onChangeText={onChange}
                   value={value}

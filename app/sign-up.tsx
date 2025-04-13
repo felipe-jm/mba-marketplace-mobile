@@ -191,7 +191,6 @@ export default function SignUp() {
                       placeholder="mail@exemplo.br"
                       autoCapitalize="none"
                       iconLeft={Mail}
-                      iconRight={Eye}
                       value={value}
                       onChangeText={onChange}
                       errorMessage={errors.email?.message}
@@ -209,7 +208,6 @@ export default function SignUp() {
                       secureTextEntry
                       autoCapitalize="none"
                       iconLeft={KeyRound}
-                      iconRight={Eye}
                       value={value}
                       onChangeText={onChange}
                       errorMessage={errors.password?.message}
@@ -227,7 +225,6 @@ export default function SignUp() {
                       secureTextEntry
                       autoCapitalize="none"
                       iconLeft={KeyRound}
-                      iconRight={Eye}
                       value={value}
                       onChangeText={onChange}
                       errorMessage={errors.password_confirm?.message}

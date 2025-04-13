@@ -1,6 +1,6 @@
 import { ComponentProps, useState } from "react";
 
-import { CircleAlert } from "lucide-react-native";
+import { CircleAlert, Eye, EyeOff } from "lucide-react-native";
 
 import {
   Input as GluestackInput,
@@ -19,6 +19,7 @@ import {
 
 import { cn } from "@/utils/cn";
 import { Icon } from "./ui/icon";
+import { Pressable } from "react-native";
 
 type Props = ComponentProps<typeof InputField> & {
   label?: string;
@@ -28,6 +29,7 @@ type Props = ComponentProps<typeof InputField> & {
   errorMessage?: string | null;
   iconLeft?: React.ElementType;
   iconRight?: React.ElementType;
+  secureTextEntry?: boolean;
 };
 
 export function Input({
@@ -39,11 +41,19 @@ export function Input({
   className,
   iconLeft,
   iconRight,
+  secureTextEntry,
   ...rest
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const invalid = !!errorMessage || isInvalid;
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+
+  const PasswordIcon = isPasswordVisible ? Eye : EyeOff;
 
   return (
     <FormControl isInvalid={invalid} className="w-full">
@@ -87,16 +97,26 @@ export function Input({
           className={cn("px-4 py-2 font-poppins text-md", className)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          secureTextEntry={secureTextEntry && !isPasswordVisible}
           {...rest}
         />
-        {iconRight && (
+        {secureTextEntry ? (
+          <InputSlot className="mr-2">
+            <Pressable onPress={togglePasswordVisibility}>
+              <Icon
+                as={PasswordIcon}
+                className={cn("w-6 h-6 text-custom-gray-200")}
+              />
+            </Pressable>
+          </InputSlot>
+        ) : iconRight ? (
           <InputSlot className="mr-2">
             <Icon
               as={iconRight}
               className={cn("w-6 h-6 text-custom-gray-200")}
             />
           </InputSlot>
-        )}
+        ) : null}
       </GluestackInput>
 
       {errorMessage && (
