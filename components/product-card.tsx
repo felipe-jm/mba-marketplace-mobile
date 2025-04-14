@@ -29,7 +29,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <HStack className="items-baseline">
             <Text className="text-xs text-custom-gray-500">R$ </Text>
             <Text className="font-dmsans text-lg text-custom-gray-500">
-              {product.priceInCents.toFixed(2).replace(".", ",")}
+              {(product.priceInCents / 100).toFixed(2).replace(".", ",")}
             </Text>
           </HStack>
         </VStack>

@@ -35,7 +35,8 @@ export default function ProductsScreen() {
   const filterBottomSheetRef = useRef<FilterBottomSheetRefProps>(null);
 
   const [products, setProducts] = useState<ProductDTO[]>([]);
-
+  const [filters, setFilters] = useState<FilterData | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   function handleOpenFiltersModal() {
@@ -47,41 +48,67 @@ export default function ProductsScreen() {
   }
 
   function handleApplyFilters(filters: FilterData) {
-    console.log("Aplicando filtros:", filters);
-    // Implementar lógica para aplicar os filtros
+    setFilters(filters);
+  }
+
+  function handleSearch(text: string) {
+    setSearchQuery(text);
+  }
+
+  async function fetchProducts() {
+    try {
+      setIsLoading(true);
+
+      const params = new URLSearchParams();
+
+      if (searchQuery) {
+        params.append("search", searchQuery);
+      }
+
+      if (filters) {
+        if (filters.minValue) {
+          params.append("minPrice", filters.minValue);
+        }
+
+        if (filters.maxValue) {
+          params.append("maxPrice", filters.maxValue);
+        }
+
+        if (filters.categories && filters.categories.length > 0) {
+          filters.categories.forEach((categoryId: string) => {
+            params.append("categoryId", categoryId);
+          });
+        }
+      }
+
+      const query = params.toString() ? `?${params.toString()}` : "";
+      const response = await api.get(`/products${query}`);
+
+      setProducts(response.data.products);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      const title = isAppError ? error.message : "Erro ao carregar produtos.";
+
+      toast.show({
+        placement: "top",
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            action="error"
+            title={title}
+            onClose={() => toast.close(id)}
+          />
+        ),
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setIsLoading(true);
-
-        const response = await api.get("/products");
-
-        setProducts(response.data.products);
-      } catch (error) {
-        const isAppError = error instanceof AppError;
-
-        const title = isAppError ? error.message : "Erro ao carregar produtos.";
-
-        toast.show({
-          placement: "top",
-          render: ({ id }) => (
-            <ToastMessage
-              id={id}
-              action="error"
-              title={title}
-              onClose={() => toast.close(id)}
-            />
-          ),
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     fetchProducts();
-  }, []);
+  }, [filters, searchQuery]);
 
   return (
     <SafeAreaView className="flex-1 bg-custom-shape-white">
@@ -109,7 +136,12 @@ export default function ProductsScreen() {
 
             <HStack className="w-full gap-2 mt-4 items-center">
               <Box className="flex-1">
-                <Input placeholder="Pesquisar" iconLeft={Search} />
+                <Input
+                  placeholder="Pesquisar"
+                  iconLeft={Search}
+                  value={searchQuery}
+                  onChangeText={handleSearch}
+                />
               </Box>
 
               <Button

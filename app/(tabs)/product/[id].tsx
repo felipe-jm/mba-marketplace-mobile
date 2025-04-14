@@ -93,7 +93,9 @@ export default function Product() {
               <HStack className="items-baseline">
                 <Text className="text-xs text-custom-gray-500">R$ </Text>
                 <Text className="font-dmsans text-xl text-custom-gray-500">
-                  {product?.priceInCents.toFixed(2).replace(".", ",")}
+                  {((product?.priceInCents ?? 0) / 100)
+                    .toFixed(2)
+                    .replace(".", ",")}
                 </Text>
               </HStack>
             </HStack>

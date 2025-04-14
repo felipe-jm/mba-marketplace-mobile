@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -20,16 +21,13 @@ import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 import { Icon } from "@/components/ui/icon";
 import { Pressable } from "@/components/ui/pressable";
+import { useToast } from "@/components/ui/toast";
 import { Checkbox } from "./checkbox";
 
-const CATEGORIES = [
-  { id: "1", label: "Brinquedo" },
-  { id: "2", label: "Móvel" },
-  { id: "3", label: "Papelaria" },
-  { id: "4", label: "Saúde & Beleza" },
-  { id: "5", label: "Utensílio" },
-  { id: "6", label: "Vestuário" },
-];
+import { CategoryDTO } from "@/dtos/category-dto";
+import { api } from "@/services/api";
+import { ToastMessage } from "./toast-message";
+import { AppError } from "@/utils/app-error";
 
 export type FilterBottomSheetRefProps = {
   open: () => void;
@@ -51,8 +49,13 @@ export const FilterBottomSheet = forwardRef<FilterBottomSheetRefProps, Props>(
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const snapPoints = ["60%"];
 
+    const toast = useToast();
+
     const [minValue, setMinValue] = useState("");
     const [maxValue, setMaxValue] = useState("");
+
+    const [categories, setCategories] = useState<CategoryDTO[]>([]);
+
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const handleOpen = useCallback(() => {
@@ -110,6 +113,36 @@ export const FilterBottomSheet = forwardRef<FilterBottomSheetRefProps, Props>(
       []
     );
 
+    useEffect(() => {
+      async function fetchCategories() {
+        try {
+          const response = await api.get("/categories");
+
+          setCategories(response.data.categories);
+        } catch (error) {
+          const isAppError = error instanceof AppError;
+
+          const title = isAppError
+            ? error.message
+            : "Erro ao carregar produtos.";
+
+          toast.show({
+            placement: "top",
+            render: ({ id }) => (
+              <ToastMessage
+                id={id}
+                action="error"
+                title={title}
+                onClose={() => toast.close(id)}
+              />
+            ),
+          });
+        }
+      }
+
+      fetchCategories();
+    }, []);
+
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -131,7 +164,6 @@ export const FilterBottomSheet = forwardRef<FilterBottomSheetRefProps, Props>(
 
           <BottomSheetScrollView showsVerticalScrollIndicator={false}>
             <VStack className="gap-6">
-              {/* Filtro de Valor */}
               <VStack className="gap-3">
                 <Text className="text-sm font-dmsans">Valor</Text>
 
@@ -155,24 +187,22 @@ export const FilterBottomSheet = forwardRef<FilterBottomSheetRefProps, Props>(
                 </HStack>
               </VStack>
 
-              {/* Filtro de Categoria */}
               <VStack className="gap-3">
                 <Text className="text-sm font-dmsans">Categoria</Text>
 
                 <VStack className="gap-2">
-                  {CATEGORIES.map((category) => (
+                  {categories.map((category) => (
                     <Checkbox
                       key={category.id}
                       value={category.id}
                       isChecked={selectedCategories.includes(category.id)}
                       onChange={() => handleSelectCategory(category.id)}
-                      label={category.label}
+                      label={category.title}
                     />
                   ))}
                 </VStack>
               </VStack>
 
-              {/* Botões de ação */}
               <HStack className="gap-4 mt-4 mb-2">
                 <Button
                   title="Limpar filtro"
