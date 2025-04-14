@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { router } from "expo-router";
 
 import { Eye, KeyRound, Mail, ArrowRight } from "lucide-react-native";
@@ -32,7 +32,7 @@ const signInSchema = z.object({
 });
 
 export default function Index() {
-  const { signIn } = useAuth();
+  const { signIn, user, isLoadingUserStorageData } = useAuth();
 
   const toast = useToast();
 
@@ -50,6 +50,12 @@ export default function Index() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (user && user.id && !isLoadingUserStorageData) {
+      router.replace("/(tabs)");
+    }
+  }, [user, isLoadingUserStorageData]);
 
   function handleNavigateToSignUp() {
     router.push("/sign-up");
@@ -81,6 +87,11 @@ export default function Index() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  // If still loading user data, don't render the login form yet
+  if (isLoadingUserStorageData) {
+    return null;
   }
 
   return (

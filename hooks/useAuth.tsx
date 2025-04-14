@@ -70,8 +70,6 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
         );
 
         updateUserAndTokenStorage(data.seller, data.access_token);
-
-        router.navigate("/(tabs)");
       }
     } catch (err) {
       throw err;
@@ -85,8 +83,6 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
       setUser({} as UserDTO);
       await removeUserStorage();
       await removeAuthToken();
-
-      router.navigate("/");
     } catch (error) {
       throw error;
     } finally {
@@ -97,8 +93,7 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
   async function updateUserProfile(updatedUser: UserDTO) {
     try {
       setUser(updatedUser);
-
-      router.navigate("/(tabs)");
+      await saveUserStorage(updatedUser);
     } catch (error) {
       throw error;
     }
@@ -111,11 +106,11 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
       const loggedUser = await getUserStorage();
       const { access_token } = await getAuthToken();
 
-      if (loggedUser.id && access_token) {
+      if (loggedUser && loggedUser.id && access_token) {
         updateUserAndTokenStorage(loggedUser, access_token);
       }
     } catch (error) {
-      throw error;
+      console.error("Error loading user data:", error);
     } finally {
       setIsLoadingUserStorageData(false);
     }

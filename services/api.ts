@@ -61,7 +61,7 @@ api.registerInterceptTokenManager = (singOut) => {
           return new Promise(async (resolve, reject) => {
             try {
               const { data } = await api.post("/sessions/refresh", {
-                refresh_token,
+                refreshToken: refresh_token,
               });
 
               await storageAuthToken({

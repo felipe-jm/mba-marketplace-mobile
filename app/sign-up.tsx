@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { router } from "expo-router";
 
@@ -57,7 +57,7 @@ const signUpSchema = z
   });
 
 export default function SignUp() {
-  const { signIn } = useAuth();
+  const { signIn, user, isLoadingUserStorageData } = useAuth();
 
   const toast = useToast();
 
@@ -79,6 +79,12 @@ export default function SignUp() {
       password_confirm: "",
     },
   });
+
+  useEffect(() => {
+    if (user && user.id && !isLoadingUserStorageData) {
+      router.replace("/(tabs)");
+    }
+  }, [user, isLoadingUserStorageData]);
 
   function handleNavigateToSignIn() {
     router.push("/");
@@ -133,6 +139,11 @@ export default function SignUp() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  // If still loading user data, don't render the signup form yet
+  if (isLoadingUserStorageData) {
+    return null;
   }
 
   return (
